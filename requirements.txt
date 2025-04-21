@@ -1,0 +1,19 @@
+transformers=4.50.3 (already installed)
+datasets=3.5.0
+evaluate=0.4.3
+accelerate=1.6.0
+peft=0.15.2
+trl=0.16.1
+bitsandbytes=0.45.5
+nvidia-ml-py3=7.352.0
+
+Additional dependencies and their versions:
+pyarrow=19.0.1
+pandas=2.2.3
+dill=0.3.8
+tqdm=4.67.1
+requests=2.32.3
+fsspec=2024.12.0
+xxhash=3.5.0
+aiohttp=3.11.16
+rich=14.0.0
