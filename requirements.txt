@@ -7,7 +7,7 @@ trl=0.16.1
 bitsandbytes=0.45.5
 nvidia-ml-py3=7.352.0
 
-Additional dependencies and their versions:
+#Additional dependencies and their versions:
 pyarrow=19.0.1
 pandas=2.2.3
 dill=0.3.8
