@@ -9,6 +9,6 @@ Install the libraries with the specific version mentioned in requirements.txt
 We had trained the models in the HPC burst node for efficient compute (4 GPUs and 12 cores).
 
 ## Final Model:
-The final model is at notebooks/LORA_for_news_classification.ipynb
+The final model is at `notebooks/LORA_for_news_classification.ipynb`
 
-results folder contains the inference_output.csv which are the inferences made by the model on unlabelled data (test_unlabelled.pkl) 
+results folder contains the `inference_output.csv` which are the inferences made by the model on unlabelled data (`test_unlabelled.pkl`) 
