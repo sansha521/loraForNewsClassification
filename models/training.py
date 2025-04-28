@@ -11,7 +11,9 @@ def run_training():
     class_names = dataset.features["label"].names
     id2label = {i: label for i, label in enumerate(class_names)}
 
+    # Set up dynamic padding
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer, return_tensors="pt")
+    # Split dataset into train and evaluation sets
     split_datasets = tokenized_dataset.train_test_split(test_size=640, seed=42)
     train_dataset = split_datasets['train']
     eval_dataset = split_datasets['test']
@@ -29,17 +31,22 @@ def run_training():
     results = []
     output_dir = "results"
 
+    # Perform grid search over all hyperparameter combinations
     for (r, alpha, dropout, bias, opt, lr, bs, ep) in product(
             lora_rs, lora_alphas, lora_dropouts, bias_options, optimizers, learning_rates, batch_sizes, epochs):
 
-        print(f"\n🔧 Training with r={r}, alpha={alpha}, dropout={dropout}, bias={bias}, opt={opt}, lr={lr}, bs={bs}, epochs={ep}")
+        print(f"\n Training with r={r}, alpha={alpha}, dropout={dropout}, bias={bias}, opt={opt}, lr={lr}, bs={bs}, epochs={ep}")
+        # Load base model
         model = RobertaForSequenceClassification.from_pretrained("roberta-base", num_labels=num_labels, id2label=id2label)
+        # Apply LoRA configuration
         peft_config = LoraConfig(r=r, lora_alpha=alpha, lora_dropout=dropout, bias=bias, target_modules=["query"], task_type="SEQ_CLS")
         model = get_peft_model(model, peft_config)
         model.print_trainable_parameters()
 
+        # Define output directory for the current run
         output_subdir = f"{output_dir}/r{r}_a{alpha}_d{dropout}_b{bias}_o{opt}_lr{lr}_bs{bs}_ep{ep}"
 
+        # Set up HuggingFace Trainer training arguments
         training_args = TrainingArguments(
             output_dir=output_subdir,
             evaluation_strategy="epoch",
@@ -65,11 +72,14 @@ def run_training():
             tokenizer=tokenizer
         )
 
+        # Train and evaluate model
         trainer.train()
         metrics = trainer.evaluate()
+        # Save model and tokenizer for current configuration
         model.save_pretrained(output_subdir)
         tokenizer.save_pretrained(output_subdir)
 
+        # Store results for later analysis
         results.append({
             "r": r, "alpha": alpha, "dropout": dropout, "bias": bias, "optimizer": opt,
             "lr": lr, "batch_size": bs, "epochs": ep, "accuracy": metrics["eval_accuracy"]
