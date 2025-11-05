@@ -12,3 +12,23 @@ We had trained the models in the HPC burst node for efficient compute (4 GPUs an
 The final model is at `notebooks/LORA_for_news_classification.ipynb`
 
 results folder contains the `inference_output.csv` which are the inferences made by the model on unlabelled data (`test_unlabelled.pkl`) 
+
+This is a project repo for a Kaggle competition with the goal of coming up with a modified BERT (RoBERTa) architecture with the highest test accuracy for text classification on a dataset "AGNEWS". 
+The final model must follow the constraint that it uses no more than 1 million trainable parameters. 
+
+The team worked on modifying a specific part of BERT - the low rank adaption (LoRA). 
+
+LoRA is a finetuning method where instead of finetuning all the weights that constitute the weight matrix of the pre-trained large language model, two smaller matrices that approximate this larger matrix are fine-tuned (see databricks article: https://www.databricks.com/blog/efficient-fine-tuning-lora-guide-llms).
+It is implemented in the Hugging Face Parameter Efficient Fine-Tuning (PEFT) library. 
+The low-rank matrix derived by LoRA is then feeded to BERT's weight matrices. 
+
+An overview of the LoRA architecture is shown:
+
+<img width="737" height="619" alt="image" src="https://github.com/user-attachments/assets/7ed1cda4-5f5e-4a28-804c-7ebddf84f2c3" />
+
+Source: https://arxiv.org/abs/2106.09685
+
+This represents the tensor operations for one matrix in the model. A and B are the small matrices. 
+The input vector d is processed both through the original pre-trained weights and through LoRA's fine-tuned, low-rank decomposition matrices in parallel (see more here: https://www.anyscale.com/blog/fine-tuning-llms-lora-or-full-parameter-an-in-depth-analysis-with-llama-2)
+
+The 
