@@ -52,4 +52,18 @@ training samples using whatever technique you like).
 
 NYU HPC is used to train the models. 
 
+### Experimentation
+A number of configurations are tested:
+r = [4, 8, 21]
+alpha = [16, 24, 32]
+dropout = [0, .05, .1]
+bias = [lora_only]
+optimizer = [adamw_torch, muon]
+learning_rate = [1e-3, 1e-2, 1e-1]
+epoch = [1]
 
+### Results
+The highest test accuracy was taken with r = 4, alpha = 16, dropout = 0, and bias = ”lora only”, at 84.3%. 
+Training was conducted using the Adam optimizer with a batch size of 16 and a learning rate of 1e−3.
+
+<img width="592" height="126" alt="image" src="https://github.com/user-attachments/assets/a2f0ea02-d64f-40f5-835b-f5ad827b00c8" />
