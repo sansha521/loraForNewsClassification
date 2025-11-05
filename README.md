@@ -32,4 +32,20 @@ This represents the tensor operations for one matrix in the model. A and B are t
 The input vector d is processed both through the original pre-trained weights and through LoRA's fine-tuned, low-rank decomposition matrices in parallel (see more here: https://www.anyscale.com/blog/fine-tuning-llms-lora-or-full-parameter-an-in-depth-analysis-with-llama-2)
 
 The parameters to tune for this task is the rank of the matrix AB, denoted by r. 
-Another parameter is &alpha 
+Another parameter is alpha, which is the scalar multiplied with AB when added to the original weight. 
+
+The task allows tuning the parameters by layer or even by weight matrix. 
+
+Additionally, the following can be tuned:
+• any optimizer (ADAM, RMSProp, Muon, etc)
+• any data filtering strategy (e.g. you can throw away lengthy or weird reviews
+according to metrics of your choice.)
+• any regularizer
+• any choice of learning rate, batch size, epochs, scheduler, etc.
+• other tricks such as teacher-student distillation, or quantization (QLoRA), or etc.
+• any data augmentation strategy (e.g. you can choose to reword/rephrase/cleanup
+training samples using whatever technique you like). 
+
+NYU HPC is used to train the models. 
+
+
