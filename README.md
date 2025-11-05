@@ -13,7 +13,7 @@ The final model is at `notebooks/LORA_for_news_classification.ipynb`
 
 results folder contains the `inference_output.csv` which are the inferences made by the model on unlabelled data (`test_unlabelled.pkl`) 
 
-### What this project is about
+## What this project is about
 This is a project repo for a Kaggle competition with the goal of coming up with a modified BERT (RoBERTa) architecture with the highest test accuracy for text classification on a dataset "AGNEWS". 
 The final model must follow the constraint that it uses no more than 1 million trainable parameters. 
 
