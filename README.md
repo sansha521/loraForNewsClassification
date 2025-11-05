@@ -31,4 +31,5 @@ Source: https://arxiv.org/abs/2106.09685
 This represents the tensor operations for one matrix in the model. A and B are the small matrices. 
 The input vector d is processed both through the original pre-trained weights and through LoRA's fine-tuned, low-rank decomposition matrices in parallel (see more here: https://www.anyscale.com/blog/fine-tuning-llms-lora-or-full-parameter-an-in-depth-analysis-with-llama-2)
 
-The 
+The parameters to tune for this task is the rank of the matrix AB, denoted by r. 
+Another parameter is &alpha 
