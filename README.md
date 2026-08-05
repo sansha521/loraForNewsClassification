@@ -1,16 +1,5 @@
 # Deep Learning News Classification
 
-## Install Libraries
-Install the libraries with the specific version mentioned in requirements.txt
-
-## Training
-We had trained the models in the HPC burst node for efficient compute (4 GPUs and 12 cores).
-
-## Final Model:
-The final model is at `notebooks/LORA_for_news_classification.ipynb`
-
-results folder contains the `inference_output.csv` which are the inferences made by the model on unlabelled data (`test_unlabelled.pkl`) 
-
 ### Goal
 This is a project repo for a Kaggle competition with the goal of coming up with a modified BERT (RoBERTa) architecture with the highest test accuracy for text classification on a dataset "AGNEWS". 
 The final model must follow the constraint that it uses no more than 1 million trainable parameters. 
@@ -64,3 +53,14 @@ The highest test accuracy was taken with r = 4, alpha = 16, dropout = 0, and bia
 Training was conducted using the Adam optimizer with a batch size of 16 and a learning rate of 1e−3.
 
 <img width="592" height="126" alt="image" src="https://github.com/user-attachments/assets/a2f0ea02-d64f-40f5-835b-f5ad827b00c8" />
+
+## Install Libraries
+Install the libraries with the specific version mentioned in requirements.txt
+
+## Training
+We had trained the models in the HPC burst node for efficient compute (4 GPUs and 12 cores).
+
+## Final Model:
+The final model is at `notebooks/LORA_for_news_classification.ipynb`
+
+results folder contains the `inference_output.csv` which are the inferences made by the model on unlabelled data (`test_unlabelled.pkl`) 
