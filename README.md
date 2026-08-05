@@ -4,6 +4,10 @@
 This is a project repo for a Kaggle competition with the goal of coming up with a modified BERT (RoBERTa) architecture with the highest test accuracy for text classification on a dataset "AGNEWS". 
 The final model must follow the constraint that it uses no more than 1 million trainable parameters. 
 
+### Report
+Report for this experiment can be found under 
+LoRA report.pdf
+
 ### Background
 The team worked on modifying a specific part of BERT - the low rank adaption (LoRA). 
 
