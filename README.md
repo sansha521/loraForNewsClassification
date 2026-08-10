@@ -67,9 +67,6 @@ References
 Contributing
 - Contributions are welcome. Open an issue or submit a PR for bug fixes, improvements, or updated experiments.
 
-License
-- If you would like to add a license, include a LICENSE file in the repository. Currently none is specified.
-
 Contact
 - Maintainer: sansha521
 
