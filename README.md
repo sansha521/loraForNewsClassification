@@ -1,70 +1,76 @@
-# Deep Learning News Classification
+# News Classification with LoRA (RoBERTa)
 
-### Goal
-This is a project repo for a Kaggle competition with the goal of coming up with a modified BERT (RoBERTa) architecture with the highest test accuracy for text classification on a dataset "AGNEWS". 
-The final model must follow the constraint that it uses no more than 1 million trainable parameters. 
+This repository contains code and notebooks for fine-tuning RoBERTa using Low-Rank Adaptation (LoRA) for the AG News text classification task. The project was developed for a Kaggle-style experiment with the constraint that the final model should use no more than 1 million trainable parameters.
 
-### Report
-Report for this experiment can be found under 
-LoRA report.pdf
+Key results
+- Best test accuracy: 84.3%
+- Best hyperparameters: r = 4, alpha = 16, dropout = 0, bias = "lora_only"
+- Training details: Adam optimizer, batch size 16, learning rate 1e-3
 
-### Background
-The team worked on modifying a specific part of BERT - the low rank adaption (LoRA). 
+Background
+- LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning method that injects trainable low-rank matrices into the transformer architecture instead of updating the full pre-trained weight matrices. This allows large models to be adapted to downstream tasks while keeping the number of trainable parameters small.
+- Paper: https://arxiv.org/abs/2106.09685
+- Implementation: Hugging Face PEFT (Parameter-Efficient Fine-Tuning)
 
-LoRA is a finetuning method where instead of finetuning all the weights that constitute the weight matrix of the pre-trained large language model, two smaller matrices that approximate this larger matrix are fine-tuned (see databricks article: https://www.databricks.com/blog/efficient-fine-tuning-lora-guide-llms).
-It is implemented in the Hugging Face Parameter Efficient Fine-Tuning (PEFT) library. 
-The low-rank matrix derived by LoRA is then feeded to BERT's weight matrices. 
+Repository structure
+- notebooks/
+  - LORA_for_news_classification.ipynb  — main notebook used for training, evaluation, and inference
+- data/
+  - (expected) train/val/test datasets or scripts to prepare AG News
+- results/
+  - inference_output.csv — model inferences on the unlabelled test set
+- checkpoints/
+  - checkpoint-*/ — saved model checkpoints and model card templates
+- requirements.txt — Python package dependencies
 
-An overview of the LoRA architecture is shown:
+Quick start
+1. Create a Python environment and install dependencies:
 
-<img width="737" height="619" alt="image" src="https://github.com/user-attachments/assets/7ed1cda4-5f5e-4a28-804c-7ebddf84f2c3" />
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-Source: https://arxiv.org/abs/2106.09685
+2. Prepare the AG News dataset (or use the provided/preprocessed files):
+- The notebook expects training/validation/test splits. If you have raw AG News data, add a short preprocessing script to `data/` or adapt the notebook.
 
-This represents the tensor operations for one matrix in the model. A and B are the small matrices. 
-The input vector d is processed both through the original pre-trained weights and through LoRA's fine-tuned, low-rank decomposition matrices in parallel (see more here: https://www.anyscale.com/blog/fine-tuning-llms-lora-or-full-parameter-an-in-depth-analysis-with-llama-2)
+3. Open the main notebook and run the cells:
+- `notebooks/LORA_for_news_classification.ipynb` contains step-by-step code to reproduce training, evaluation, and inference.
 
-### Method
-The parameters to tune for this task is the rank of the matrix AB, denoted by r. 
-Another parameter is alpha, which is the scalar multiplied with AB when added to the original weight. 
+Reproducing experiments (summary)
+- Tested configurations (examples):
+  - r = [4, 8, 21]
+  - alpha = [16, 24, 32]
+  - dropout = [0, 0.05, 0.1]
+  - bias = ["lora_only"]
+  - optimizer = [adamw_torch, muon]
+  - learning_rate = [1e-3, 1e-2, 1e-1]
+  - epochs = [1]
 
-The task allows tuning the parameters by layer or even by weight matrix. 
+- The best run achieved 84.3% test accuracy with r=4, alpha=16, dropout=0, and "lora_only" bias. Training used AdamW, lr=1e-3, batch_size=16.
 
-Additionally, the following can be tuned:
-• any optimizer (ADAM, RMSProp, Muon, etc)
-• any data filtering strategy (e.g. you can throw away lengthy or weird reviews
-according to metrics of your choice.)
-• any regularizer
-• any choice of learning rate, batch size, epochs, scheduler, etc.
-• other tricks such as teacher-student distillation, or quantization (QLoRA), or etc.
-• any data augmentation strategy (e.g. you can choose to reword/rephrase/cleanup
-training samples using whatever technique you like). 
+Training notes
+- Experiments were run on an HPC burst node (4 GPUs, 12 CPU cores). If you do not have multiple GPUs available, reduce batch size or run on a single GPU.
+- The project is implemented using PyTorch and Hugging Face Transformers + PEFT. See `requirements.txt` for exact versions.
 
-NYU HPC is used to train the models. 
+Inference
+- The `results/inference_output.csv` file contains model predictions on the unlabelled test set (`test_unlabelled.pkl` in the repo, if present). The notebook includes the inference pipeline used to generate this file.
 
-### Experimentation
-A number of configurations are tested:
-r = [4, 8, 21]
-alpha = [16, 24, 32]
-dropout = [0, .05, .1]
-bias = [lora_only]
-optimizer = [adamw_torch, muon]
-learning_rate = [1e-3, 1e-2, 1e-1]
-epoch = [1]
+Model checkpoints and model card
+- Checkpoints are stored under `checkpoints/`. Some checkpoints include a model card template (incomplete) that can be filled with additional metadata.
 
-### Results
-The highest test accuracy was taken with r = 4, alpha = 16, dropout = 0, and bias = ”lora only”, at 84.3%. 
-Training was conducted using the Adam optimizer with a batch size of 16 and a learning rate of 1e−3.
+References
+- LoRA paper: https://arxiv.org/abs/2106.09685
+- Hugging Face PEFT: https://github.com/huggingface/peft
 
-<img width="592" height="126" alt="image" src="https://github.com/user-attachments/assets/a2f0ea02-d64f-40f5-835b-f5ad827b00c8" />
+Contributing
+- Contributions are welcome. Open an issue or submit a PR for bug fixes, improvements, or updated experiments.
 
-## Install Libraries
-Install the libraries with the specific version mentioned in requirements.txt
+License
+- If you would like to add a license, include a LICENSE file in the repository. Currently none is specified.
 
-## Training
-We had trained the models in the HPC burst node for efficient compute (4 GPUs and 12 cores).
+Contact
+- Maintainer: sansha521
 
-## Final Model:
-The final model is at `notebooks/LORA_for_news_classification.ipynb`
 
-results folder contains the `inference_output.csv` which are the inferences made by the model on unlabelled data (`test_unlabelled.pkl`) 
