@@ -67,7 +67,12 @@ References
 Contributing
 - Contributions are welcome. Open an issue or submit a PR for bug fixes, improvements, or updated experiments.
 
+License
+
+This repository is licensed under the MIT License — see the LICENSE file for details.
+
+Unless otherwise noted, the MIT license applies to the code, notebooks, and model artifacts (checkpoints and inference outputs) included in this repository. The original AG News dataset is not included in this repository and remains subject to its original license and terms of use.
+
 Contact
 - Maintainer: sansha521
-
 
